@@ -1,25 +1,20 @@
 #!/usr/bin/env python3
 import sys
 import os 
+import json
 import time 
 import random
 import configparser
-import sqlite3
 import argparse 
 
-
-workdir = os.path.abspath('assets')
-database_path = os.path.join(workdir, 'coins.db')
-conn = sqlite3.connect(database_path)
-cur = conn.cursor()
-
 config = configparser.ConfigParser()
-config.read('config.ini')
-
+config.read("config.ini")
 background = config.get('SETTINGS', 'background')
 coin_type = config.get('SETTINGS', 'coin')
 num_flips = config.get('SETTINGS', 'flips')
 
+with open("assets.json") as f:
+    assets = json.load(f)
 
 # wrapper over os.system('clear'/'cls')
 def clear_screen():
@@ -30,7 +25,7 @@ def clear_screen():
     else:
         os.system('clear')
 
-def coin_flip(coin=coin_type, flips=num_flips, bg=background):
+def coin_flip(coin=coin_type, flips=int(num_flips), bg=background):
     bg_types = {'light' : 0, 'dark' : 1}
     coin_sides = {0 : 'head', 1 : 'tail'}
 
@@ -41,26 +36,22 @@ def coin_flip(coin=coin_type, flips=num_flips, bg=background):
     while flip < flips:
 
         for a in range(0,360,15):
-            side_coin_ascii = cur.execute('''SELECT light_coin_ascii, dark_coin_ascii FROM coin_side\
-            WHERE coin_type=? AND angle=?''',\
-            (coin, a)).fetchone()[bg_types[bg]]
-
+            side_coin_ascii = assets[coin]['side'][str(a)]
             print(side_coin_ascii)
-            time.sleep(.2)
+            time.sleep(.1)
             clear_screen()
 
         clear_screen()
-        time.sleep(.2)
+        time.sleep(.1)
 
         flip += 1 
 
     result = random.randint(0,1)
-    face_coin_ascii = cur.execute('''SELECT light_coin_ascii, dark_coin_ascii FROM coin_face\
-            WHERE coin_type=? AND face=?''',\
-            (coin, coin_sides[result])).fetchone()[bg_types[bg]]
+    face = coin_sides[result]
+    face_coin_ascii = assets[coin][face]
 
     print(face_coin_ascii)
-    print(coin_sides[result].upper() + 'S' + '!')
+    print(face.upper() + 'S!')
 
 def Main():
     parser = argparse.ArgumentParser(description="Flips a coin of a specified\
