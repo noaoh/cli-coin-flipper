@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import sys
-import os 
+from console import *
 import json
 import time 
 import random
@@ -16,23 +15,16 @@ num_flips = config.get('SETTINGS', 'flips')
 with open("assets.json") as f:
     assets = json.load(f)
 
-# wrapper over os.system('clear'/'cls')
-def clear_screen():
-
-    if sys.platform == "win32":
-        os.system('cls')
-
-    else:
-        os.system('clear')
-
 def coin_flip(coin=coin_type, flips=int(num_flips), bg=background):
-    bg_types = {'light' : 0, 'dark' : 1}
+    # Can't figure out how to support this
+    # bg_types = {'light' : 0, 'dark' : 1}
     coin_sides = {0 : 'head', 1 : 'tail'}
 
-    os.system('setterm -cursor off')
 
     flip = 0
 
+    clear_screen()
+    hide_cursor()
     while flip < flips:
 
         for a in range(0,360,15):
@@ -52,6 +44,7 @@ def coin_flip(coin=coin_type, flips=int(num_flips), bg=background):
 
     print(face_coin_ascii)
     print(face.upper() + 'S!')
+    show_cursor()
 
 def Main():
     parser = argparse.ArgumentParser(description="Flips a coin of a specified\
@@ -74,6 +67,7 @@ def Main():
     args_dict['flips'] = int(args_dict['flips'])
 
     coin_flip(**args_dict)
+
 
 if __name__ == "__main__":
     Main()

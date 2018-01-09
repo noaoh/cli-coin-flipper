@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 from setuptools import setup, find_packages
 setup(
         name='cli_coin_flipper',
@@ -16,7 +17,7 @@ setup(
             ],
         keywords='fun command-line chance ascii', 
         packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-        install_requires=['imgii'],
+        install_requires=['argparse','configparser'],
         entry_points={'console_scripts': ['coin-flip =\
             coin_flipper.coin:Main']},
 )    
