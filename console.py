@@ -21,7 +21,7 @@ def hide_cursor():
         ctypes.windll.kernel32.SetConsoleCursorInfo(handle, ctypes.byref(ci))
 
     elif os.name == 'posix':
-        sys.stdout.write("\033[?25l")
+        sys.stdout.write("\e?25l")
         sys.stdout.flush()
 
 
@@ -35,7 +35,8 @@ def show_cursor():
         ctypes.windll.kernel32.SetConsoleCursorInfo(handle, ctypes.byref(ci))
 
     elif os.name == 'posix':
-        sys.stdout.write("\033[?25h")
+        os.system('setterm -cursor on')
+        sys.stdout.write("\e?25h")
         sys.stdout.flush()
 
 def clear_screen():

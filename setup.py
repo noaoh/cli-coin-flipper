@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 from setuptools import setup, find_packages
 setup(
         name='cli_coin_flipper',
@@ -6,8 +6,9 @@ setup(
         description='An animated coin flipper in your terminal',
         url='https://github.com/noaoh/cli-coin-flipper',
         author='Noah Holt',
-        author_email='noahryanholt@tutanota.de',
+        author_email='noahryanholt@gmail.com',
         license='GPL3',
+        python_requires='>=3',
         classifiers=[
             'Development Status :: 3 - Alpha',
             'Intended Audience :: End Users/Desktop',
@@ -15,10 +16,14 @@ setup(
             'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
             'Natural Language :: English',
             ],
-        keywords='fun command-line chance ascii', 
+        package_data = {
+            'assets' : ['assets.json'],
+            'config' : ['config.ini']
+            },
+        keywords='coin fun command-line chance ascii', 
         packages=find_packages(exclude=['contrib', 'docs', 'tests']),
         install_requires=['argparse','configparser'],
         entry_points={'console_scripts': ['coin-flip =\
-            coin_flipper.coin:Main']},
+            coin:Main']},
 )    
 
